@@ -10,6 +10,7 @@ const router = new VueRouter({
   routes,
 });
 
+import { state } from "./store.js"; // check if need to delete
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -78,6 +79,7 @@ const shared_data = {
     localStorage.removeItem("username");
     this.username = undefined;
   },
+  server_domain: state.server_domain,
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
