@@ -51,6 +51,8 @@ axios.interceptors.request.use(
   }
 );
 
+// axios.defaults.withCredentials = true;
+
 // Add a response interceptor
 axios.interceptors.response.use(
   function(response) {
