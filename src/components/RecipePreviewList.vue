@@ -40,19 +40,20 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        console.log(this);
         let response;
         switch (this._props.state) {
           case "random":
             response = await this.axios.get(
-              this.$root.store.server_domain + "/recipes/getRandomRecipes"
+              this.$root.store.server_domain + "/recipes/getRandomRecipes",
               // "https://test-for-3-2.herokuapp.com/recipes/random"
+              { withCredentials: true }
             );
             break;
           case "lastWatched":
             response = await this.axios.get(
-              this.$root.store.server_domain + "/users/lastWatches"
+              this.$root.store.server_domain + "/users/lastWatches",
               // "https://test-for-3-2.herokuapp.com/recipes/random"
+              { withCredentials: true }
             );
             break;
           default:

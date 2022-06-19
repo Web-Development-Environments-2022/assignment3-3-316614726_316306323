@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="title">Main Page</h1>
+  <div id="main-container">
+    <h1 id="main-title" class="title">Welcome To The Main Page!</h1>
     <RecipePreviewList
       title="Random Recipes"
       class="RandomRecipes center"
@@ -48,5 +48,20 @@ export default {
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+
+#main-container {
+  background-image: url("../assets/main-background.jpg");
+  background-size: cover;
+  background-height: 100px;
+}
+
+* {
+  text-align: center;
+  color: white;
+  text-shadow: 2px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+h1 {
+  font-size: 100px;
 }
 </style>
