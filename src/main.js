@@ -2,9 +2,10 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
-
+import VueCookies from "vue-cookies";
 import routes from "./routes";
 import VueRouter from "vue-router";
+Vue.use(VueCookies);
 Vue.use(VueRouter);
 const router = new VueRouter({
   routes,
@@ -25,6 +26,7 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  FormCheckboxPlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -37,6 +39,7 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  FormCheckboxPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -73,10 +76,17 @@ const shared_data = {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
+    if (!this.$cookies.get("session")) {
+      this.$cookies.set("session", this.username, 1);
+      console.log(this.$cookie.get("session"));
+    }
   },
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    if (this.$cookies.get("session")) {
+      this.$cookies.delete("session");
+    }
     this.username = undefined;
   },
   server_domain: state.server_domain,

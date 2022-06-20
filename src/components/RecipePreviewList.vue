@@ -46,7 +46,9 @@ export default {
             response = await this.axios.get(
               this.$root.store.server_domain + "/recipes/getRandomRecipes",
               // "https://test-for-3-2.herokuapp.com/recipes/random"
-              { withCredentials: true }
+              {
+                withCredentials: true,
+              }
             );
             break;
           case "lastWatched":
@@ -55,6 +57,7 @@ export default {
               // "https://test-for-3-2.herokuapp.com/recipes/random"
               { withCredentials: true }
             );
+            console.log(response);
             break;
           default:
             return;

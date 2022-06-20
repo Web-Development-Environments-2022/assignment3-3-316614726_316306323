@@ -10,12 +10,12 @@
           <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Likes: {{ recipe.popularity }} likes</div>
             </div>
             Ingredients:
             <ul>
               <li
-                v-for="(r, index) in recipe.extendedIngredients"
+                v-for="(r, index) in recipe.ingredients"
                 :key="index + '_' + r.id"
               >
                 {{ r.original }}
@@ -24,11 +24,7 @@
           </div>
           <div class="wrapped">
             Instructions:
-            <ol>
-              <li v-for="s in recipe._instructions" :key="s.number">
-                {{ s.step }}
-              </li>
-            </ol>
+            <p v-html="recipe.instructions" />
           </div>
         </div>
       </div>
@@ -43,9 +39,69 @@
 
 <script>
 export default {
+  props: {
+    recipeId: Number,
+  },
   data() {
     return {
-      recipe: null,
+      recipe: {
+        type: Object,
+      },
+      // id: {
+      //   type: Number,
+      //   required: true,
+      // },
+      // image: {
+      //   type: String,
+      //   required: true,
+      // },
+      // ingredients: {
+      //   type: Array,
+      //   required: true,
+      // },
+      // instructions: {
+      //   type: String,
+      //   required: true,
+      // },
+      // isFavorite: {
+      //   type: Boolean,
+      //   required: true,
+      // },
+      // isGlutenFree: {
+      //   type: Boolean,
+      //   required: true,
+      // },
+      // isVegan: {
+      //   type: Boolean,
+      //   required: true,
+      // },
+      // isVegetarian: {
+      //   type: Boolean,
+      //   required: true,
+      // },
+      // isWatched: {
+      //   type: Boolean,
+      //   required: true,
+      // },
+      // popularity: {
+      //   type: Number,
+      //   required: false,
+      //   default() {
+      //     return undefined;
+      //   },
+      // },
+      // readyInMinutes: {
+      //   type: Number,
+      //   required: true,
+      // },
+      // servings: {
+      //   type: Number,
+      //   required: true,
+      // },
+      // title: {
+      //   type: String,
+      //   required: true,
+      // },
     };
   },
   async created() {
@@ -59,7 +115,7 @@ export default {
           this.$root.store.server_domain +
             `/recipes/getRecipe/${this.$route.params.recipeId}`
         );
-
+        console.log(response);
         // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
@@ -68,35 +124,41 @@ export default {
         return;
       }
 
-      let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-      } = response.data.recipe;
+      // let {
+      //   image,
+      //   ingredients,
+      //   instructions,
+      //   isFavorite,
+      //   isGlutenFree,
+      //   isVegan,
+      //   isVegetarian,
+      //   isWatched,
+      //   popularity,
+      //   readyInMinutes,
+      //   servings,
+      //   title,
+      // } = response.data;
+      this.recipe = response.data;
 
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
+      // let _instructions = analyzedInstructions
+      //   .map((fstep) => {
+      //     fstep.steps[0].step = fstep.name + fstep.steps[0].step;
+      //     return fstep.steps;
+      //   })
+      //   .reduce((a, b) => [...a, ...b], []);
 
-      let _recipe = {
-        instructions,
-        _instructions,
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-      };
+      // let _recipe = {
+      //   instructions,
+      //   _instructions,
+      //   analyzedInstructions,
+      //   extendedIngredients,
+      //   aggregateLikes,
+      //   readyInMinutes,
+      //   image,
+      //   title,
+      // };
 
-      this.recipe = _recipe;
+      // this.recipe = _recipe;
     } catch (error) {
       console.log(error);
     }

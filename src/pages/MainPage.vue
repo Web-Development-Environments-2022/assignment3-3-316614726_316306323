@@ -6,16 +6,18 @@
       class="RandomRecipes center"
       state="random"
     />
-    <router-link v-if="!$root.store.username" to="/login" tag="button"
+    <!-- <router-link v-if="!$root.store.username" to="/login" tag="button"
       >You need to Login first!</router-link
-    >
+    > -->
+    <Login v-if="!$root.store.username" />
+
     <!-- {{ !$root.store.username }} -->
     <RecipePreviewList
+      v-else
       title="Last Viewed Recipes"
       state="lastWatched"
       :class="{
         RandomRecipes: true,
-        blur: !$root.store.username,
         center: true,
       }"
       disabled
@@ -30,9 +32,12 @@
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import Login from "../components/Login";
+
 export default {
   components: {
     RecipePreviewList,
+    Login,
   },
 };
 </script>
