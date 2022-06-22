@@ -95,9 +95,9 @@
     </b-alert>
     <RecipePreviewList
       v-if="searchClicked"
-      title="Search Results:"
+      title="Search Results"
       state="search"
-      :searchParams="params"
+      :recipesData="recipes"
     />
   </div>
 </template>
@@ -126,18 +126,8 @@ export default {
       errors: [],
       validated: false,
       searchClicked: false,
+      recipes: [],
     };
-  },
-  computed: {
-    params: function() {
-      return {
-        query: this.form.query,
-        cuisine: this.form.cuisine,
-        diet: this.form.diet,
-        intolerance: this.form.intolerance,
-        number: this.form.number,
-      };
-    },
   },
   validations: {
     form: {
@@ -166,8 +156,23 @@ export default {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
-    async Search(formFields) {
+    async Search() {
       try {
+        const paramsList = {};
+        const allParams = ["query", "cuisine", "diet", "intolerance", "number"];
+        allParams.forEach((param) => {
+          if (this.form[param]) {
+            paramsList[param] = this.form[param];
+          }
+        });
+        let response = await this.axios.get(
+          // "https://test-for-3-2.herokuapp.com/user/Register",
+          this.$root.store.server_domain + "/recipes/SearchRecipes",
+          {
+            params: paramsList,
+          }
+        );
+        this.recipes.push(...response.data);
         this.searchClicked = true;
       } catch (err) {
         console.log(err.response);
@@ -185,6 +190,7 @@ export default {
       // this.onReset();
       // this.form = formFields;
       // this.$forceUpdate();
+      this.recipes = [];
       this.Search();
     },
     onReset() {

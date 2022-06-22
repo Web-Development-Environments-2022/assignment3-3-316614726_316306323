@@ -115,7 +115,6 @@ export default {
           this.$root.store.server_domain +
             `/recipes/getRecipe/${this.$route.params.recipeId}`
         );
-        console.log(response);
         // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {

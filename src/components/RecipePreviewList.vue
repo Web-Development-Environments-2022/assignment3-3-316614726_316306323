@@ -28,9 +28,12 @@ export default {
       type: String,
       required: true,
     },
-    searchParams: {
-      type: Object,
-      required: false,
+    // searchParams: {
+    //   type: Object,
+    //   required: false,
+    // },
+    recipesData: {
+      type: Array,
     },
   },
   data() {
@@ -61,15 +64,8 @@ export default {
             console.log(response);
             break;
           case "search":
-            response = await this.axios.get(
-              // "https://test-for-3-2.herokuapp.com/user/Register",
-              this.$root.store.server_domain + "/recipes/SearchRecipes",
-              {
-                params: this._props.searchParams,
-              }
-            );
-            console.log(response);
-
+            this.recipes.push(...this.recipesData);
+            return;
             break;
           default:
             return;
