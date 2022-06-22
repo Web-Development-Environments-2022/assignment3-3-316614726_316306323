@@ -27,6 +27,7 @@ import {
   ToastPlugin,
   LayoutPlugin,
   FormCheckboxPlugin,
+  FormRadioPlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -40,6 +41,7 @@ import {
   ToastPlugin,
   LayoutPlugin,
   FormCheckboxPlugin,
+  FormRadioPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -76,18 +78,21 @@ const shared_data = {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
-    if (!this.$cookies.get("session")) {
-      this.$cookies.set("session", this.username, 1);
-      console.log(this.$cookie.get("session"));
-    }
   },
-  logout() {
+  async logout() {
     console.log("logout");
     localStorage.removeItem("username");
-    if (this.$cookies.get("session")) {
-      this.$cookies.delete("session");
-    }
     this.username = undefined;
+    // try {
+    //   const response = await this.axios.post(
+    //     this.$root.store.server_domain + "/Logout",
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   );
+    // } catch (err) {
+    //   console.log(err.response);
+    // }
   },
   server_domain: state.server_domain,
 };

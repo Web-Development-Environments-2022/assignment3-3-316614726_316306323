@@ -62,6 +62,19 @@
         </b-collapse>
       </div>
 
+      <b-form-group
+        label="Please choose number of returned results:"
+        v-slot="{ ariaDescribedby }"
+      >
+        <b-form-radio-group
+          v-model="form.number"
+          :options="form.options"
+          :aria-describedby="ariaDescribedby"
+          name="plain-inline"
+          plain
+        ></b-form-radio-group>
+      </b-form-group>
+
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
         type="submit"
@@ -80,17 +93,21 @@
     >
       Search failed: {{ form.submitError }}
     </b-alert>
-    <!-- <b-card class="mt-3 md-3" header="Form Data Result">
-      <pre class="m-0"><strong>form:</strong> {{ form }}</pre>
-      <pre class="m-0"><strong>$v.form:</strong> {{ $v.form }}</pre>
-    </b-card> -->
+    <RecipePreviewList
+      v-if="searchClicked"
+      title="Search Results:"
+      state="search"
+      :searchParams="params"
+    />
   </div>
 </template>
 
 <script>
 import { required, alpha } from "vuelidate/lib/validators";
+import RecipePreviewList from "../components/RecipePreviewList";
 export default {
   name: "search",
+  components: { RecipePreviewList },
   data() {
     return {
       form: {
@@ -98,11 +115,29 @@ export default {
         cuisine: "",
         diet: "",
         intolerance: "",
+        number: 5,
+        options: [
+          { text: "5", value: 5 },
+          { text: "10", value: 10 },
+          { text: "15", value: 15 },
+        ],
         submitError: undefined,
       },
       errors: [],
       validated: false,
+      searchClicked: false,
     };
+  },
+  computed: {
+    params: function() {
+      return {
+        query: this.form.query,
+        cuisine: this.form.cuisine,
+        diet: this.form.diet,
+        intolerance: this.form.intolerance,
+        number: this.form.number,
+      };
+    },
   },
   validations: {
     form: {
@@ -124,31 +159,16 @@ export default {
   mounted() {
     // console.log("mounted");
     // console.log($v);
+    this.searchClicked = false;
   },
   methods: {
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
-    async Search() {
+    async Search(formFields) {
       try {
-        console.log(this.$root.store.server_domain);
-        console.log("search function entered!");
-        // const response = await this.axios.post(
-        //   // "https://test-for-3-2.herokuapp.com/user/Register",
-        //   this.$root.store.server_domain + "/Register",
-
-        //   {
-        //     username: this.form.username,
-        //     firstname: this.form.firstName,
-        //     lastname: this.form.lastName,
-        //     country: this.form.country,
-        //     password: this.form.password,
-        //     email: this.form.email,
-        //   }
-        // );
-        // console.log(response);
-        // this.$router.push("/login");
+        this.searchClicked = true;
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
@@ -161,14 +181,26 @@ export default {
         return;
       }
       // console.log("register method go");
+      // let formFields = this.form;
+      // this.onReset();
+      // this.form = formFields;
+      // this.$forceUpdate();
       this.Search();
     },
     onReset() {
+      this.searchClicked = false;
       this.form = {
         query: "",
         cousine: "",
         diet: "",
         intolerance: "",
+        number: 5,
+        options: [
+          { text: "5", value: 5 },
+          { text: "10", value: 10 },
+          { text: "15", value: 15 },
+        ],
+        submitError: undefined,
       };
       this.$nextTick(() => {
         this.$v.$reset();
