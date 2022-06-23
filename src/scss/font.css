@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Alegreya Sans SC");
+
+html,
+body {
+  font-family: "Alegreya Sans SC", sans-serif;
+}
+
+#app {
+  font-family: "Alegreya Sans SC", sans-serif;
+}

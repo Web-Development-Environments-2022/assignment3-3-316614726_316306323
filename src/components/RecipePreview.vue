@@ -1,23 +1,28 @@
 <template>
   <div>
-    <router-link
+    <b-card
       v-if="image_load"
-      :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-      class="recipe-preview"
+      :title="recipe.title"
+      :img-src="recipe.image"
+      img-alt="Image"
+      img-top
+      tag="article"
+      style="max-width: 20rem;"
+      class="mb-2"
     >
-      <div class="recipe-body">
-        <img v-if="image_load" :src="recipe.image" class="recipe-image" />
-      </div>
-      <div class="recipe-footer">
-        <div :title="recipe.title" class="recipe-title">
-          {{ recipe.title }}
-        </div>
-        <ul class="recipe-overview">
-          <li>{{ recipe.readyInMinutes }} minutes</li>
-          <li>{{ recipe.popularity }} likes</li>
-        </ul>
-      </div>
-    </router-link>
+      <b-card-text>
+        {{ recipe.readyInMinutes }} Minutes <br />
+        {{ recipe.popularity }} Likes
+        <p v-if="recipe.isWatched">👁</p>
+        <p v-if="recipe.isFavorite">❤️</p>
+      </b-card-text>
+      <router-link
+        :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+        class="recipe-preview"
+      >
+        <b-button variant="primary">Check this out!</b-button>
+      </router-link>
+    </b-card>
     <b-spinner v-else variant="primary"></b-spinner>
   </div>
 </template>

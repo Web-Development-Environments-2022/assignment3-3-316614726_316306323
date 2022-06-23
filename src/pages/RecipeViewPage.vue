@@ -8,6 +8,21 @@
       <div class="recipe-body">
         <div class="wrapper">
           <div class="wrapped">
+            <b-button
+              v-if="!recipe.isFavorite"
+              variant="outline-danger"
+              @click="addToFavorite"
+              >Add to Favorites ❤️</b-button
+            >
+            <b-button v-else variant="outline-danger" disabled
+              >Favorite Recipe ❤️</b-button
+            >
+            <br />
+            <b-button v-if="recipe.isWatched" variant="outline-primary" disabled
+              >You've seen this recipe before 👁</b-button
+            >
+          </div>
+          <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.popularity }} likes</div>
@@ -25,11 +40,6 @@
           </div>
         </div>
       </div>
-      <!-- <pre>
-      {{ $route.params }}
-      {{ recipe }}
-    </pre
-      > -->
     </div>
   </div>
 </template>
@@ -44,68 +54,11 @@ export default {
       recipe: {
         type: Object,
       },
-      // id: {
-      //   type: Number,
-      //   required: true,
-      // },
-      // image: {
-      //   type: String,
-      //   required: true,
-      // },
-      // ingredients: {
-      //   type: Array,
-      //   required: true,
-      // },
-      // instructions: {
-      //   type: String,
-      //   required: true,
-      // },
-      // isFavorite: {
-      //   type: Boolean,
-      //   required: true,
-      // },
-      // isGlutenFree: {
-      //   type: Boolean,
-      //   required: true,
-      // },
-      // isVegan: {
-      //   type: Boolean,
-      //   required: true,
-      // },
-      // isVegetarian: {
-      //   type: Boolean,
-      //   required: true,
-      // },
-      // isWatched: {
-      //   type: Boolean,
-      //   required: true,
-      // },
-      // popularity: {
-      //   type: Number,
-      //   required: false,
-      //   default() {
-      //     return undefined;
-      //   },
-      // },
-      // readyInMinutes: {
-      //   type: Number,
-      //   required: true,
-      // },
-      // servings: {
-      //   type: Number,
-      //   required: true,
-      // },
-      // title: {
-      //   type: String,
-      //   required: true,
-      // },
     };
   },
   async created() {
     try {
       let response;
-      // response = this.$route.params.response;
-
       try {
         response = await this.axios.get(
           // "https://test-for-3-2.herokuapp.com/recipes/info",
@@ -119,45 +72,33 @@ export default {
         this.$router.replace("/NotFound");
         return;
       }
-
-      // let {
-      //   image,
-      //   ingredients,
-      //   instructions,
-      //   isFavorite,
-      //   isGlutenFree,
-      //   isVegan,
-      //   isVegetarian,
-      //   isWatched,
-      //   popularity,
-      //   readyInMinutes,
-      //   servings,
-      //   title,
-      // } = response.data;
       this.recipe = response.data;
-
-      // let _instructions = analyzedInstructions
-      //   .map((fstep) => {
-      //     fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-      //     return fstep.steps;
-      //   })
-      //   .reduce((a, b) => [...a, ...b], []);
-
-      // let _recipe = {
-      //   instructions,
-      //   _instructions,
-      //   analyzedInstructions,
-      //   extendedIngredients,
-      //   aggregateLikes,
-      //   readyInMinutes,
-      //   image,
-      //   title,
-      // };
-
-      // this.recipe = _recipe;
     } catch (error) {
       console.log(error);
     }
+  },
+  methods: {
+    async addToFavorite() {
+      try {
+        let response;
+        try {
+          let response = await this.axios.post(
+            this.$root.store.server_domain + `/users/favorites`,
+            {
+              recipeId: this.recipe.id,
+            }
+          );
+          if (response.status !== 200) this.$router.replace("/NotFound");
+        } catch (error) {
+          console.log("error.response.status", error.response.status);
+          this.$router.replace("/NotFound");
+          return;
+        }
+        this.recipe.isFavorite = true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
