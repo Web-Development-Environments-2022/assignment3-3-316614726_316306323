@@ -14,11 +14,8 @@
             </div>
             Ingredients:
             <ul>
-              <li
-                v-for="(r, index) in recipe.ingredients"
-                :key="index + '_' + r.id"
-              >
-                {{ r.original }}
+              <li v-for="(r, index) in recipe.ingredients" :key="index">
+                {{ r.name }}: {{ r.amount }} {{ r.unit }}
               </li>
             </ul>
           </div>

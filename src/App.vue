@@ -12,11 +12,9 @@
           <b-navbar-nav>
             <b-nav-item :to="{ name: 'main' }">Main</b-nav-item>
             <b-nav-item :to="{ name: 'search' }">Search 🔎</b-nav-item>
-            <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
             <b-nav-item-dropdown
               :disabled="!$root.store.username ? true : false"
               text="Personal"
-              right
             >
               <b-dropdown-item :to="{ name: 'favorite' }"
                 >Favorites ❤</b-dropdown-item
@@ -26,6 +24,9 @@
               >
               <b-dropdown-item :to="{ name: 'family' }"
                 >Family Recipes 👪</b-dropdown-item
+              >
+              <b-dropdown-item @click="updateModal" v-b-modal.modal-lg
+                >Create New Recipe 📝</b-dropdown-item
               >
             </b-nav-item-dropdown>
             <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
@@ -57,6 +58,7 @@
         </b-collapse>
       </b-navbar>
     </div>
+    <CreateRecipeModal v-if="showModal" />
     <div id="main">
       <img id="header" src="./assets/app-header.jpg" />
       <router-view />
@@ -65,8 +67,17 @@
 </template>
 
 <script>
+import CreateRecipeModal from "./components/CreateRecipeModal";
 export default {
   name: "App",
+  components: {
+    CreateRecipeModal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
   methods: {
     Logout() {
       this.$root.store.logout();
@@ -75,6 +86,10 @@ export default {
       this.$router.push("/").catch(() => {
         this.$forceUpdate();
       });
+    },
+    updateModal(e) {
+      e.preventDefault();
+      this.showModal = true;
     },
   },
 };

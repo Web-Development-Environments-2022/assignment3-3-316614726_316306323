@@ -28,6 +28,8 @@ import {
   LayoutPlugin,
   FormCheckboxPlugin,
   FormRadioPlugin,
+  ModalPlugin,
+  SpinnerPlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -42,6 +44,8 @@ import {
   LayoutPlugin,
   FormCheckboxPlugin,
   FormRadioPlugin,
+  ModalPlugin,
+  SpinnerPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

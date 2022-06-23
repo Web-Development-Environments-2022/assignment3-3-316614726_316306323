@@ -6,7 +6,12 @@
     </h3>
     <b-row>
       <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
+        <RecipePreview
+          v-if="state !== 'family'"
+          class="recipePreview"
+          :recipe="r"
+        />
+        <FamilyRecipe v-else :recipe="r" />
       </b-col>
     </b-row>
   </b-container>
@@ -14,10 +19,12 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
+import FamilyRecipe from "./FamilyRecipe.vue";
 export default {
   name: "RecipePreviewList",
   components: {
     RecipePreview,
+    FamilyRecipe,
   },
   props: {
     title: {
@@ -61,11 +68,33 @@ export default {
               // "https://test-for-3-2.herokuapp.com/recipes/random"
               // { withCredentials: true }
             );
-            console.log(response);
             break;
           case "search":
             this.recipes.push(...this.recipesData);
             return;
+            break;
+          case "favorite":
+            response = await this.axios.get(
+              this.$root.store.server_domain + "/users/favorites"
+              // "https://test-for-3-2.herokuapp.com/recipes/random"
+              // { withCredentials: true }
+            );
+            break;
+          case "private":
+            response = await this.axios.get(
+              this.$root.store.server_domain + "/users/personal"
+              // "https://test-for-3-2.herokuapp.com/recipes/random"
+              // { withCredentials: true }
+            );
+            console.log(response);
+            break;
+          case "family":
+            response = await this.axios.get(
+              this.$root.store.server_domain + "/users/family"
+              // "https://test-for-3-2.herokuapp.com/recipes/random"
+              // { withCredentials: true }
+            );
+            console.log(response);
             break;
           default:
             return;
@@ -80,6 +109,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    loaded() {
+      this.isLoaded = true;
+      this.isLoading = false;
     },
   },
 };
