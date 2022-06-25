@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar toggleable="lg" type="dark">
         <b-navbar-brand
           >🍴 Pesto & Rachel - It's All About The Taste 🍴</b-navbar-brand
         >
@@ -107,6 +107,10 @@ export default {
 
 #header {
   width: 100%;
+}
+
+#nav {
+  background-color: rgb(191, 64, 128);
 }
 /*
 height: 600px;
