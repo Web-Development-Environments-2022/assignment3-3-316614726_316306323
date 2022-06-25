@@ -37,7 +37,10 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template #button-content>
-                <em>User 👤</em>
+                <em v-if="$root.store.username"
+                  >Hello {{ $root.store.username }} 👤</em
+                >
+                <em v-else>Hello Guest 👤</em>
               </template>
 
               <b-dropdown-item
@@ -104,10 +107,9 @@ export default {
 
 #header {
   width: 100%;
-  height: 600px;
-  z-index: -10;
 }
 /*
+height: 600px;
 #nav {
   overflow: hidden;
   position: fixed; 

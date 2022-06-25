@@ -13,8 +13,19 @@
       <b-card-text>
         {{ recipe.readyInMinutes }} Minutes <br />
         {{ recipe.popularity }} Likes
+        <div v-if="recipe.isVegan">Vegan 🌿</div>
+        <div v-if="recipe.isVegetarian">Vegetarian 🥕</div>
+        <div v-if="recipe.isGlutenFree">Gluten Free 🌾❌</div>
         <p v-if="recipe.isWatched">👁</p>
         <p v-if="recipe.isFavorite">❤️</p>
+        <p v-else>
+          <b-button
+            v-if="!recipe.isFavorite"
+            variant="outline-danger"
+            @click="addToFavorite"
+            >Add to Favorites</b-button
+          >
+        </p>
       </b-card-text>
       <router-link
         :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
@@ -43,6 +54,29 @@ export default {
     recipe: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    async addToFavorite() {
+      try {
+        let response;
+        try {
+          let response = await this.axios.post(
+            this.$root.store.server_domain + `/users/favorites`,
+            {
+              recipeId: this.recipe.id,
+            }
+          );
+          if (response.status !== 200) this.$router.replace("/NotFound");
+        } catch (error) {
+          console.log("error.response.status", error.response.status);
+          this.$router.replace("/NotFound");
+          return;
+        }
+        this.recipe.isFavorite = true;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

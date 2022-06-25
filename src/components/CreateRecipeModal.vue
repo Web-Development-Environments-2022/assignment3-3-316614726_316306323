@@ -93,9 +93,6 @@
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-modal>
-    <b-card v-if="this.form.ingredients.length">
-      {{ form.ingredients }}
-    </b-card>
   </div>
 </template>
 <script>

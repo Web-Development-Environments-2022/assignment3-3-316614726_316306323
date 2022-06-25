@@ -59,6 +59,15 @@
               </b-form-input>
             </b-form-group>
           </b-card>
+          <b-card>
+            <b-form-select
+              v-model="form.sort"
+              :options="form.sortOptions"
+              value="form.sort"
+              size="sm"
+              class="mt-3"
+            ></b-form-select>
+          </b-card>
         </b-collapse>
       </div>
 
@@ -98,6 +107,7 @@
       title="Search Results"
       state="search"
       :recipesData="recipes"
+      :key="searchClicked"
     />
   </div>
 </template>
@@ -116,16 +126,22 @@ export default {
         diet: "",
         intolerance: "",
         number: 5,
+        sort: "",
         options: [
           { text: "5", value: 5 },
           { text: "10", value: 10 },
           { text: "15", value: 15 },
         ],
+        sortOptions: [
+          { value: "", text: "Sort By", disabled: true },
+          { value: "time", text: "Time" },
+          { value: "popularity", text: "Popularity" },
+        ],
         submitError: undefined,
       },
       errors: [],
       validated: false,
-      searchClicked: false,
+      searchClicked: 0,
       recipes: [],
     };
   },
@@ -146,11 +162,6 @@ export default {
       },
     },
   },
-  mounted() {
-    // console.log("mounted");
-    // console.log($v);
-    this.searchClicked = false;
-  },
   methods: {
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
@@ -159,7 +170,14 @@ export default {
     async Search() {
       try {
         const paramsList = {};
-        const allParams = ["query", "cuisine", "diet", "intolerance", "number"];
+        const allParams = [
+          "query",
+          "cuisine",
+          "diet",
+          "intolerance",
+          "number",
+          "sort",
+        ];
         allParams.forEach((param) => {
           if (this.form[param]) {
             paramsList[param] = this.form[param];
@@ -173,7 +191,7 @@ export default {
           }
         );
         this.recipes.push(...response.data);
-        this.searchClicked = true;
+        this.searchClicked += 1;
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
@@ -194,20 +212,30 @@ export default {
       this.Search();
     },
     onReset() {
-      this.searchClicked = false;
       this.form = {
         query: "",
-        cousine: "",
+        cuisine: "",
         diet: "",
         intolerance: "",
         number: 5,
+        sort: "",
         options: [
           { text: "5", value: 5 },
           { text: "10", value: 10 },
           { text: "15", value: 15 },
         ],
+        sortOptions: [
+          { value: "", text: "Sort By", disabled: true },
+          { value: "time", text: "Time" },
+          { value: "popularity", text: "Popularity" },
+        ],
         submitError: undefined,
       };
+      this.errors = [];
+      this.validated = false;
+      this.searchClicked = 0;
+      this.recipes = [];
+
       this.$nextTick(() => {
         this.$v.$reset();
       });
@@ -217,6 +245,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 500px;
+  max-width: 650px;
 }
 </style>

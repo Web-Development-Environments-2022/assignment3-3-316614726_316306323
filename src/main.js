@@ -30,6 +30,7 @@ import {
   FormRadioPlugin,
   ModalPlugin,
   SpinnerPlugin,
+  ImagePlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -46,6 +47,7 @@ import {
   FormRadioPlugin,
   ModalPlugin,
   SpinnerPlugin,
+  ImagePlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

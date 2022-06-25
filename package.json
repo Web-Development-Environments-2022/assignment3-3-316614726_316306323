@@ -11,6 +11,7 @@
     "bootstrap": "^5.2.0-beta1",
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.23.1",
+    "cors": "^2.8.5",
     "express-session": "^1.17.3",
     "sass": "^1.52.3",
     "vue": "^2.6.14",

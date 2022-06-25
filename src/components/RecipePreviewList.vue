@@ -13,6 +13,22 @@
         />
         <FamilyRecipe v-else :recipe="r" />
       </b-col>
+      <b-card
+        v-if="state === 'random'"
+        title="Explore More Recipes"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <img src="../assets/random-img.jpg" class="card-img img-fluid" />
+        <b-button
+          id="explore-btn"
+          variant="outline-primary"
+          @click="updateRecipes"
+          >Explore</b-button
+        >
+      </b-card>
     </b-row>
   </b-container>
 </template>
@@ -121,5 +137,9 @@ export default {
 <style lang="scss" scoped>
 .container {
   min-height: 400px;
+}
+
+#explore-btn {
+  margin-top: 20px;
 }
 </style>

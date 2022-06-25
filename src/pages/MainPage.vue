@@ -2,7 +2,7 @@
   <div id="main-container">
     <!-- <h1 id="main-title" class="title">Welcome To The Main Page!</h1> -->
     <RecipePreviewList
-      title="Random Recipes"
+      title="Explore This Recipes"
       class="RandomRecipes center"
       state="random"
     />
@@ -14,7 +14,7 @@
     <!-- {{ !$root.store.username }} -->
     <RecipePreviewList
       v-else
-      title="Last Viewed Recipes"
+      title="Last Watched Recipes"
       state="lastWatched"
       :class="{
         RandomRecipes: true,
@@ -42,9 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.RandomRecipes {
-  margin: 10px 0 10px;
-}
 .blur {
   -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
   filter: blur(2px);
@@ -57,7 +54,6 @@ export default {
 #main-container {
   background-image: url("../assets/main-background.jpg");
   background-size: cover;
-  background-height: 100px;
 }
 
 * {
