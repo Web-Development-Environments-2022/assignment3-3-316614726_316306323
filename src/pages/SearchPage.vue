@@ -1,6 +1,12 @@
 <template>
   <div class="container">
     <h1 class="title">Search Recipe!</h1>
+    <p id="lastSearchP" v-if="lastSearch">
+      🔎 Your Last Search Was:&nbsp;&nbsp;
+      <b
+        ><i>{{ lastSearch }}</i></b
+      >&nbsp;&nbsp;🔎
+    </p>
     <b-form @submit.prevent="onSearch" @reset.prevent="onReset">
       <b-form-group
         id="input-group-query"
@@ -153,7 +159,7 @@ export default {
         { value: "time", text: "Time" },
         { value: "popularity", text: "Popularity" },
       ],
-
+      lastSearch: "",
       errors: [],
       validated: false,
       searchClicked: 0,
@@ -164,6 +170,8 @@ export default {
     this.cuisines.push(...cuisines);
     this.diets.push(...diets);
     this.intolerances.push(...intolerances);
+
+    this.lastSearch = localStorage.getItem("lastSearch");
   },
   validations: {
     form: {
@@ -228,6 +236,8 @@ export default {
       }
 
       this.recipes = [];
+      localStorage.setItem("lastSearch", this.form["query"]);
+      this.lastSearch = this.form["query"];
       this.Search();
     },
     onReset() {
@@ -255,5 +265,13 @@ export default {
 <style lang="scss" scoped>
 .container {
   max-width: 650px;
+}
+
+#lastSearchP {
+  border-style: solid;
+  border-width: medium;
+  border-color: black;
+  background-color: #ff7f50;
+  max-width: 500px;
 }
 </style>

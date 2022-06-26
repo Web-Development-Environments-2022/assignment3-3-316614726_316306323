@@ -90,6 +90,7 @@ const shared_data = {
   async logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    localStorage.removeItem("lastSearch");
     this.username = undefined;
     // try {
     //   const response = await this.axios.post(
