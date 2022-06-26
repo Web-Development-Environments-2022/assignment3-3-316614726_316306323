@@ -29,12 +29,11 @@
               label="Cuisine:"
               label-for="cuisine"
             >
-              <b-form-input
-                type="text"
+              <b-form-select
                 id="cuisine"
                 v-model="$v.form.cuisine.$model"
-              >
-              </b-form-input>
+                :options="cuisines"
+              ></b-form-select>
             </b-form-group>
             <b-form-group
               id="input-group-DietGroup"
@@ -42,8 +41,11 @@
               label="Diet:"
               label-for="diet"
             >
-              <b-form-input type="text" id="diet" v-model="$v.form.diet.$model">
-              </b-form-input>
+              <b-form-select
+                id="diet"
+                v-model="$v.form.diet.$model"
+                :options="diets"
+              ></b-form-select>
             </b-form-group>
             <b-form-group
               id="input-group-IntoleranceGroup"
@@ -51,18 +53,17 @@
               label="Intolerance:"
               label-for="intolerance"
             >
-              <b-form-input
-                type="text"
+              <b-form-select
                 id="intolerance"
                 v-model="$v.form.intolerance.$model"
-              >
-              </b-form-input>
+                :options="intolerances"
+              ></b-form-select>
             </b-form-group>
           </b-card>
           <b-card>
             <b-form-select
               v-model="form.sort"
-              :options="form.sortOptions"
+              :options="sortOptions"
               value="form.sort"
               size="sm"
               class="mt-3"
@@ -77,7 +78,7 @@
       >
         <b-form-radio-group
           v-model="form.number"
-          :options="form.options"
+          :options="amountOptions"
           :aria-describedby="ariaDescribedby"
           name="plain-inline"
           plain
@@ -102,19 +103,28 @@
     >
       Search failed: {{ form.submitError }}
     </b-alert>
+
     <RecipePreviewList
-      v-if="searchClicked"
+      v-if="searchClicked && recipes.length > 0"
       title="Search Results"
       state="search"
       :recipesData="recipes"
       :key="searchClicked"
     />
+    <b-modal id="noResultsModal" title="Not Found Any Recipe!"
+      >There is no recipe that meets the search requirements. Please search
+      again more accurately!
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { required, alpha } from "vuelidate/lib/validators";
 import RecipePreviewList from "../components/RecipePreviewList";
+import cuisines from "../assets/cuisines";
+import diets from "../assets/diets";
+import intolerances from "../assets/intolerances";
+
 export default {
   name: "search",
   components: { RecipePreviewList },
@@ -127,23 +137,33 @@ export default {
         intolerance: "",
         number: 5,
         sort: "",
-        options: [
-          { text: "5", value: 5 },
-          { text: "10", value: 10 },
-          { text: "15", value: 15 },
-        ],
-        sortOptions: [
-          { value: "", text: "Sort By", disabled: true },
-          { value: "time", text: "Time" },
-          { value: "popularity", text: "Popularity" },
-        ],
         submitError: undefined,
       },
+      cuisines: [{ value: null, text: "", disabled: true }],
+      diets: [{ value: null, text: "", disabled: true }],
+      intolerances: [{ value: null, text: "", disabled: true }],
+      amountOptions: [
+        // options
+        { text: "5", value: 5 },
+        { text: "10", value: 10 },
+        { text: "15", value: 15 },
+      ],
+      sortOptions: [
+        { value: "", text: "Sort By", disabled: true },
+        { value: "time", text: "Time" },
+        { value: "popularity", text: "Popularity" },
+      ],
+
       errors: [],
       validated: false,
       searchClicked: 0,
       recipes: [],
     };
+  },
+  mounted() {
+    this.cuisines.push(...cuisines);
+    this.diets.push(...diets);
+    this.intolerances.push(...intolerances);
   },
   validations: {
     form: {
@@ -192,6 +212,9 @@ export default {
         );
         this.recipes.push(...response.data);
         this.searchClicked += 1;
+        if (response.data.length == 0) {
+          this.$bvModal.show("noResultsModal");
+        }
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
@@ -203,11 +226,7 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
-      // let formFields = this.form;
-      // this.onReset();
-      // this.form = formFields;
-      // this.$forceUpdate();
+
       this.recipes = [];
       this.Search();
     },
@@ -219,16 +238,6 @@ export default {
         intolerance: "",
         number: 5,
         sort: "",
-        options: [
-          { text: "5", value: 5 },
-          { text: "10", value: 10 },
-          { text: "15", value: 15 },
-        ],
-        sortOptions: [
-          { value: "", text: "Sort By", disabled: true },
-          { value: "time", text: "Time" },
-          { value: "popularity", text: "Popularity" },
-        ],
         submitError: undefined,
       };
       this.errors = [];

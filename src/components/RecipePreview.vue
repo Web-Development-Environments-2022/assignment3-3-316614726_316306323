@@ -3,13 +3,18 @@
     <b-card
       v-if="image_load"
       :title="recipe.title"
-      :img-src="recipe.image"
       img-alt="Image"
       img-top
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
     >
+      <router-link
+        :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+        class="recipe-preview"
+      >
+        <b-card-img :src="recipe.image" />
+      </router-link>
       <b-card-text>
         {{ recipe.readyInMinutes }} Minutes <br />
         {{ recipe.popularity }} Likes
@@ -27,6 +32,7 @@
           >
         </p>
       </b-card-text>
+
       <router-link
         :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
         class="recipe-preview"

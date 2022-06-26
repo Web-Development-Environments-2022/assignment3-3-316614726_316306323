@@ -1,31 +1,37 @@
 <template>
   <div id="main-container">
     <!-- <h1 id="main-title" class="title">Welcome To The Main Page!</h1> -->
-    <RecipePreviewList
-      title="Explore This Recipes"
-      class="RandomRecipes center"
-      state="random"
-    />
-    <!-- <router-link v-if="!$root.store.username" to="/login" tag="button"
+    <div class="row vertical-align">
+      <div class="col-xs-6 col-md-6">
+        <RecipePreviewList
+          title="Explore This Recipes"
+          class="RandomRecipes center"
+          state="random"
+        />
+        <!-- <router-link v-if="!$root.store.username" to="/login" tag="button"
       >You need to Login first!</router-link
     > -->
-    <Login v-if="!$root.store.username" />
+      </div>
+      <div class="col-xs-6 col-md-6">
+        <Login v-if="!$root.store.username" />
 
-    <!-- {{ !$root.store.username }} -->
-    <RecipePreviewList
-      v-else
-      title="Last Watched Recipes"
-      state="lastWatched"
-      :class="{
-        RandomRecipes: true,
-        center: true,
-      }"
-    ></RecipePreviewList>
-    <!-- <div
+        <!-- {{ !$root.store.username }} -->
+        <RecipePreviewList
+          v-else
+          title="Last Watched Recipes"
+          state="lastWatched"
+          :class="{
+            RandomRecipes: true,
+            center: true,
+          }"
+        ></RecipePreviewList>
+      </div>
+      <!-- <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
       Centeredasdasdad
     </div>-->
+    </div>
   </div>
 </template>
 
@@ -61,5 +67,15 @@ export default {
 }
 h1 {
   font-size: 100px;
+}
+.vertical-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.vertical-align > div:last-child {
+  margin-top: 17px;
 }
 </style>

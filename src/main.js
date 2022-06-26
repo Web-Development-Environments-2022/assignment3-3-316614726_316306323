@@ -31,6 +31,7 @@ import {
   ModalPlugin,
   SpinnerPlugin,
   ImagePlugin,
+  VBHoverPlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -48,6 +49,7 @@ import {
   ModalPlugin,
   SpinnerPlugin,
   ImagePlugin,
+  VBHoverPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
