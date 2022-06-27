@@ -198,13 +198,13 @@ export default {
   data() {
     return {
       form: {
-        username: "dorle",
-        firstName: "dorle",
-        lastName: "dorle",
-        country: "Israel",
-        password: "dorle1$",
-        confirmedPassword: "dorle1$",
-        email: "dorle@aaa.com",
+        username: "",
+        firstName: "",
+        lastName: "",
+        country: "",
+        password: "",
+        confirmedPassword: "",
+        email: "",
         submitError: undefined,
       },
       countries: [{ value: null, text: "", disabled: true }],

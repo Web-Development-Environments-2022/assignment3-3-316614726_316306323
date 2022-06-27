@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes,
 });
-
+axios.defaults.withCredentials=true;
 import { state } from "./store.js"; // check if need to delete
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
@@ -92,16 +92,16 @@ const shared_data = {
     localStorage.removeItem("username");
     localStorage.removeItem("lastSearch");
     this.username = undefined;
-    // try {
-    //   const response = await this.axios.post(
-    //     this.$root.store.server_domain + "/Logout",
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   );
-    // } catch (err) {
-    //   console.log(err.response);
-    // }
+    try {
+      const response = await this.axios.post(
+        this.$root.store.server_domain + "/Logout",
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (err) {
+      console.log(err.response);
+    }
   },
   server_domain: state.server_domain,
 };
