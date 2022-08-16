@@ -25,7 +25,7 @@
         <p v-if="recipe.isFavorite">❤️</p>
         <p v-else>
           <b-button
-            v-if="!recipe.isFavorite"
+            v-if="!recipe.isFavorite && $root.store.username"
             variant="outline-danger"
             @click="addToFavorite"
             >Add to Favorites</b-button

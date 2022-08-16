@@ -1,7 +1,7 @@
 <template>
   <div id="main-container">
     <!-- <h1 id="main-title" class="title">Welcome To The Main Page!</h1> -->
-    <div class="row vertical-align">
+    <div class="row vertical-align" style="flex-wrap:nowrap;">
       <div class="col-xs-6 col-md-6">
         <RecipePreviewList
           title="Explore This Recipes"
@@ -70,7 +70,6 @@ h1 {
 }
 .vertical-align {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: row;
 }

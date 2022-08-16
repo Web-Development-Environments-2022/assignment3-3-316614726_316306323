@@ -177,7 +177,6 @@ export default {
     form: {
       query: {
         required,
-        alpha,
       },
       cuisine: {
         alpha,
@@ -264,7 +263,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 650px;
+  max-width: 70%; // 650px;
 }
 
 #lastSearchP {

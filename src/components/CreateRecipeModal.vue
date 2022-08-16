@@ -109,20 +109,29 @@ export default {
         checked: [],
         ingredients: [],
       },
-      // show: true,
+      show: true
     };
   },
   components: { DynamicInput },
   methods: {
     async onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form)); // add green window alert that the operation successeded
       try {
-        // let formData = JSON.stringify(this.form);
+        if(isNaN(parseInt(this.form.popularity)) || parseInt(this.form.popularity) < 0){
+            alert("Popularity must be positive number");
+            return;
+          }
+        if(isNaN(parseInt(this.form.servings)) || parseInt(this.form.servings) < 0){
+          alert("Servings must be positive number");
+          return;
+        }
+        if(isNaN(parseInt(this.form.preperationTime)) || parseInt(this.form.preperationTime) < 0){
+          alert("Preperation time must be positive number");
+          return;
+        }
+        
         let response = await this.axios.post(
           this.$root.store.server_domain + "/recipes/createNewRecipe",
-          // "https://test-for-3-2.herokuapp.com/recipes/random"
-          // { withCredentials: true }
           {
             title: this.form.title,
             readyInMinutes: this.form.preperationTime,

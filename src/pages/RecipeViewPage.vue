@@ -7,8 +7,8 @@
       </div>
       <div class="recipe-body">
         <div class="wrapper">
-          <div class="wrapped">
-            <b-button
+          <div class="wrapped" v-if="$root.store.username">
+            <b-button 
               v-if="!recipe.isFavorite"
               variant="outline-danger"
               @click="addToFavorite"

@@ -5,7 +5,7 @@
       <slot></slot>
     </h3>
     <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
+      <b-col class="col" v-for="r in recipes" :key="r.id">
         <RecipePreview
           v-if="state !== 'family'"
           class="recipePreview"
@@ -137,6 +137,11 @@ export default {
 <style lang="scss" scoped>
 .container {
   min-height: 400px;
+}
+
+.col{
+  width:30%;
+  flex: 1 1 30%;
 }
 
 #explore-btn {
